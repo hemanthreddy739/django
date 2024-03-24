@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ pagetitle }}</title>
+    <style>
+        marquee{
+            color: orange;
+        }
+    </style>
+  </head>
+  <body>
+    {% include 'navbar.html' %} 
+
+    {% if pagetitle == 'ProjectsInfoPage' %}
+     <marquee>you are curently viewing all the projects</marquee>
+     {% elif pagetitle == 'ProjectInfoPage' %}
+     <marquee>you are curently viewing an single project</marquee>
+     {% else %}
+     <marquee>no  page info provided!</marquee>
+     {% endif %}
+
+     
+    {% block pageinfo %} 
+    {% endblock pageinfo %} 
+    
+    {% include 'footer.html' %}
+  </body>
+</html>

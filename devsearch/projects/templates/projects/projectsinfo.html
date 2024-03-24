@@ -1,0 +1,36 @@
+
+    {% extends  'main.html' %}
+    {% block pageinfo %}
+    
+        <h3>These are amazing projects </h3>
+
+        <ul style="list-style: none;">
+
+            {% for proj in projects %}
+
+            <li>
+                <!-- <h3> {{project.project_id }} . 
+                    <a href="project/{{ project.project_id }}" 
+                    style="text-decoration: none;">
+                    {{ project.project_title }}</a>
+                </h3>  -->
+
+                <!-- it is best practise to give the url like this -->
+
+                <h3> {{proj.project_id }} . 
+                    <a href="{% url 'project' proj.project_id %}" 
+                    style="text-decoration: none;">
+                    {{ proj.project_title }}</a>
+                </h3> 
+
+                <p style="margin-left: 20px">
+                    {{ proj.project_desc }}
+                    </p>
+            </li>
+            {% endfor %}
+
+        </ul>
+        
+       
+    {% endblock pageinfo %}
+

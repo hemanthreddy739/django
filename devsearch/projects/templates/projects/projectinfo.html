@@ -1,0 +1,19 @@
+    {% extends  'main.html' %}
+    {% block pageinfo %}
+    
+        <h2>Details of your selected project</h2>
+
+        {% if choosedproject  %}
+        <div>
+            <h3>{{ choosedproject.project_id}} : {{choosedproject.project_title}} </h3>
+        
+        <p style="margin-left: 20px">
+            {{ choosedproject.project_desc }}
+            </p>
+
+        </div>
+        {% else %}
+        <h4>No Project Selected! Please select a project from the list.</h4>
+        {% endif %}
+        
+    {% endblock pageinfo %}

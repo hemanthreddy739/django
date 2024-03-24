@@ -1,0 +1,257 @@
+
+
+--> we have to maintain an every 'django_app' as an individual app, and that should have it's own { 'urls', 'views', 'models'} etc 
+    and we have to link all those, individual_django_apps in our main_project
+
+   Example:-
+   -----------
+    let's say we have an 'main_project' named "devsearch"  and we have an part of the main_project i.e individual_django_app named "projects"
+        -> "projects" have it's own views, models, and urls now we have to link that "projcet" urls that helps in 
+            routing to the "main_project" i.e { devsearch }
+
+
+   Implementation_of_the_above_example:-
+   ---------------------------------------
+
+	"projects" app:-
+       ----------------------
+		views.py:-
+              ===============
+		from django.shortcuts import render
+		from django.http import HttpResponse
+
+		def projects(request):
+		    return HttpResponse("welcome to the django projects, \
+                                        learn and njoy")
+
+		def project(request, project_id):
+		    return HttpResponse(f"now you are viewing the project: {project_id}")
+
+
+	      urls.py:-
+	     =============
+
+		from django.urls  import path
+		from . import views
+
+		urlpatterns = [
+
+    			path("projects/", views.projects, name="projects"),
+    			path("project/<str:project_id>", views.project, name="project")
+			
+			]
+
+
+
+	"devsearch" { main_project } :-
+      -----------------------------------
+		urls.py:-
+	      ===============
+		from django.contrib import admin
+		from django.urls import path, include
+
+
+		urlpatterns = [
+		    path("admin/", admin.site.urls),
+		    path('', include('projects.urls'))
+
+			]
+
+	
+
+================================================================================
+
+--> working with the 'templates' i.e the 'html' pages:-
+ 
+	-> create an new folder named 'templates' and in that keep all your html pages.
+
+	-> now go the 'settings.py' file of the 'main_project' i.e { 'devsearch' in our case }, and tell to the django where to look for the
+           template files.
+
+	-> in the 'settings.py' file in the 'template' list add the 'template_files_path' like as shown in below:-
+
+		TEMPLATES = [
+    				{	     
+				   # existing things
+					"DIRS": [
+			        	    os.path.join(BASE_DIR, 'templates'),
+        				],
+       				
+          			   #existing things
+    		       		},
+			   ]
+
+	     
+
+
+=======================================================================
+
+template :-
+--------------------
+
+--> Jinja is a fast, expressive, extensible templating engine. Special placeholders in the template allow writing 
+    code similar to Python syntax. Then the template is passed data to render the final document.
+
+--> jinja is used for templating purpose in 'django'
+
+template concept helps in reusability of the 'html' pages, it means where ever we want we can use.
+
+	-> we can we one_html_page in another_html_page:-
+	   --------------------------------------------------
+           Example:-
+           -----------
+		       navbar.html
+			--
+			--	# nabbar.html page content
+			--
+		
+		 ===========================
+	
+		# now iam going to use the 'above navbar.html' page in my 'book.html'
+
+			book.html:-
+			 --- 
+			 --- 		# book.html content  
+		
+			{% include 'navbar.html' %}    #using the 'navbar.html' inside the 'book.html'
+
+			---
+			---
+
+
+	-> we can extend 'child_pages' from an 'main_page':-
+           ------------------------------------------------------
+	    Example :-
+	   -------------
+		 main.html:-
+		   ---
+		   ---		# content of the main.html
+
+		    {% include 'navbar.html' %}
+
+		    {% block  informationblock %}
+	
+		    {% endblock informationblock %}
+
+		    {% include 'footer.html' %}
+
+	      =====================================================
+
+		# now we are going to extend the child_page from the above 'main.html'
+
+			child.html:-
+
+				{% extends 'main.html' %}
+				
+				{% block informationblock %}
+
+				   # actual child page html content
+				
+				{% endblock informationblock %}
+			
+
+
+========================================================================================================================================
+
+--> for best practises keep the 'templates' related to the specific 'django_app' in that specific 'django_app' like the below folder structure format
+
+	- MainProject
+	- user			# user django app
+	   - templates
+		- user
+		   --- html_files
+	
+	- posts			# posts djongo app
+	   - templates
+		- posts
+		   --- html_files
+
+	- templates            # common templates or overview templates are placed here
+   	   --- html_files
+
+	
+                           
+============================================================================================================
+
+Jinja template language :-
+
+	{{ variable_name }}
+
+	{% logic %} 
+
+
+==========================================
+about the databases:-
+
+Sure, let's break down the concepts of `makemigrations` and `migrate` commands in Django in a simple way:
+
+**1. `makemigrations` Command:**
+
+Imagine you're building a house. Before you start building, you create a blueprint or a plan of how your house will look. In Django, `makemigrations` is like creating a blueprint for changes you've made to your models.
+
+When you work on a Django project, you define models to represent your data. Models are like the different rooms in your house. You might add new models, change existing ones, or delete some. Every time you make these changes to your models, you need to tell Django about them. That's where `makemigrations` comes in.
+
+So, when you run `makemigrations`, Django looks at all the changes you've made to your models since the last time it created a blueprint (or migration files) and creates a new blueprint for those changes. These blueprints are like instructions for Django on how to modify the database to reflect the changes you made to your models.
+
+**2. `migrate` Command:**
+
+Now, once you have the blueprint (or migration files) created using `makemigrations`, you need to actually build the house based on that blueprint. In Django, `migrate` is like actually building the house according to the blueprint.
+
+When you run `migrate`, Django takes those migration files (the blueprints) and applies them to your database. It makes the necessary changes in your database structure to match the changes you made in your models.
+
+So, if you added a new model (let's say a new room to your house), `migrate` will create a new table in the database to store data for that model. If you changed the structure of an existing model (let's say you added a window to a room), `migrate` will alter the database table accordingly. And if you deleted a model (let's say you removed a room), `migrate` will remove the corresponding table from the database.
+
+In simple terms, `makemigrations` creates a plan for changes you've made to your models, and `migrate` carries out those changes in your database, just like making changes to your house based on the blueprint you created.
+	
+
+======================================================
+
+Models :- 
+============
+
+--> in django,  models are nothing but an 'python class' with inheriting 'models.Model'
+
+
+Example for an model:-
+------------------------
+from django.db import models
+import uuid
+
+class Project(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField(null=True, blank=True)                   # null = true; it is to tell in the data base can have null values
+    demo_link = models.CharField(max_length=2000, null=True, blank=True)    # blank = true; it is to tell django form can be submitted with an blank_val                  
+
+    source_code = models.CharField(max_length=2000, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    id = models.UUIDField(default=uuid.uuid4, unique=True, primary_key=True, editable=False) # by default django gives 'numeric' id as an pk, if we give 
+                                                                                             # other default is overridden.
+
+
+
+--> After creation of the model we have to register that model in the 'admin.py' file of that specific_app folder.
+
+	from django.contrib import admin
+	# Register your models here.
+
+	from .models import Project
+	admin.site.register(Project)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+	
+    
